@@ -14,11 +14,17 @@ jobs:
     strategy:
       matrix:
         php: [7.1, 7.2, 7.3, 7.4]
-        laravel: [5.8.*, 6.*]
+        laravel: [5.6.*, 5.7.*, 5.8.*, 6.*, 7.*, 8.*]
         os: [ubuntu-latest]
         exclude:
           - laravel: 6.*
             php: 7.1
+          - laravel: 7.*
+            php: 7.1
+          - laravel: 8.*
+            php: 7.1
+          - laravel: 8.*
+            php: 7.2
 
     name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }}
 
@@ -35,7 +41,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "illuminate/contracts:${{ matrix.laravel }}" --no-interaction --no-update
+          composer require "illuminate/database:${{ matrix.laravel }}" --no-interaction --no-update
+          composer require "illuminate/support:${{ matrix.laravel }}" --no-interaction --no-update
           composer install --prefer-dist --no-interaction --no-suggest
 
       - name: Run tests
